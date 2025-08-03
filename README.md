@@ -1,19 +1,27 @@
 <h1 align="center">Hi 👋, I'm Utkarsh Dashora</h1>
 <h3 align="center">A Passionate Full-Stack Developer | MCA Student @ Parul University</h3>
 
-- 🔭 I’m currently working on **API integration projects using FastAPI & Flutter**
+<p align="center">
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmdiNDAzMHFiaHQ2OWdkbXVhNWw1cHJvc25iNHR5Nno3M3c0bXg4NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SWoSkN6DxTszqIKEqv/giphy.gif" alt="Coding GIF" width="500"/>
+</p>
+
+---
+
+### 🔍 About Me
+
+- 🔭 I’m currently working on **API integration projects using FastAPI & Flutter**  
 - 🌱 I’m learning **Advanced System Design, DevOps tools (Docker, CI/CD)**  
-- 👯 I’m open to collaborate on **Full-Stack Web Projects**
-- 💬 Ask me about **Python, Java, Django, FastAPI, PostgreSQL, Flutter integration**
-- 📫 How to reach me: [LinkedIn](https://linkedin.com/in/utkarshdashora)
+- 👯 I’m open to collaborate on **Full-Stack Web Projects**  
+- 💬 Ask me about **Python, Java, Django, FastAPI, PostgreSQL, Flutter integration**  
+- 📫 Reach me via [LinkedIn](https://linkedin.com/in/utkarshdashora)
 
 ---
 
 ### 🛠️ Tech Stack
 
 **Frontend**  
-![HTML](https://img.shields.io/badge/HTML5-e34c26?style=flat&logo=html5&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS3-1572b6?style=flat&logo=css3&logoColor=white)
+![HTML](https://img.shields.io/badge/HTML-e34c26?style=flat&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-1572b6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
 
@@ -50,7 +58,7 @@
 - 🛠️ **CleVision Backend API** – FastAPI + PostgreSQL + Flutter Integration  
 - 🌐 **Portfolio Website** – [utkarshdashora.me](https://utkarshdashora.me)  
 - 🔐 **Auth System** – Django-based secure user management system  
-- 📲 **Todo Flutter App (Backend)** – API in FastAPI with authentication
+- 📲 **Todo Flutter App (Backend)** – API in FastAPI with authentication  
 
 ---
 
@@ -63,7 +71,7 @@
 ---
 
 ### ⚡ Fun Fact
+
 ```python
 while(True):
     code += coffee
-
