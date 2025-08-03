@@ -56,7 +56,7 @@
 ### 🚀 Recent Projects
 
 - 🛠️ **CleVision Backend API** – FastAPI + PostgreSQL + Flutter Integration  
-- 🌐 **Portfolio Website** – [utkarshdashora.me](https://utkarshdashora.me)  
+- 🌐 **Portfolio Website** – [utkarshPortfolio](https://utkarshportfolio-958b2.web.app/)  
 - 🔐 **Auth System** – Django-based secure user management system  
 - 📲 **Todo Flutter App (Backend)** – API in FastAPI with authentication  
 
@@ -65,7 +65,7 @@
 ### 🌍 Connect with Me
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://linkedin.com/in/utkarshdashora)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Website-blueviolet)](https://utkarshdashora.me)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Website-blueviolet)](https://utkarshportfolio-958b2.web.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-UtkarshDashora-000?style=flat&logo=github)](https://github.com/UtkarshDashora)
 
 ---
