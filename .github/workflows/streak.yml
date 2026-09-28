@@ -45,6 +45,11 @@ jobs:
 
           git add profile/streak.svg
 
-          git diff --cached --quiet || git commit -m "Update GitHub streak stats"
+          if git diff --cached --quiet; then
+            echo "No streak changes to commit."
+            exit 0
+          fi
 
-          git push
+          git commit -m "Update GitHub streak stats"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
