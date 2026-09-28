@@ -8,16 +8,9 @@ viewBox="0 0 900 260">
         <stop offset="0%" stop-color="#161b22"/>
         <stop offset="100%" stop-color="#0d1117"/>
     </linearGradient>
-
-    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#39d353"/>
-        <stop offset="100%" stop-color="#26a641"/>
-    </linearGradient>
 </defs>
 
 <rect
-    x="0"
-    y="0"
     width="900"
     height="260"
     rx="18"
@@ -25,29 +18,26 @@ viewBox="0 0 900 260">
     stroke="#30363d"
 />
 
-<!-- Header -->
-
 <text
     x="40"
-    y="48"
-    font-family="Arial, Helvetica, sans-serif"
-    font-size="24"
-    font-weight="700"
+    y="50"
+    font-family="Arial"
+    font-size="25"
+    font-weight="bold"
     fill="#f0f6fc">
     GitHub Contribution Streak
 </text>
 
 <text
     x="40"
-    y="76"
-    font-family="Arial, Helvetica, sans-serif"
+    y="78"
+    font-family="Arial"
     font-size="14"
     fill="#8b949e">
     @UtkarshDashora • Last 365 Days
 </text>
 
-
-<!-- Total Contributions -->
+<!-- Total -->
 
 <rect
     x="40"
@@ -62,7 +52,7 @@ viewBox="0 0 900 260">
 <text
     x="65"
     y="140"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="15"
     fill="#8b949e">
     Total Contributions
@@ -70,16 +60,15 @@ viewBox="0 0 900 260">
 
 <text
     x="65"
-    y="184"
-    font-family="Arial, Helvetica, sans-serif"
+    y="185"
+    font-family="Arial"
     font-size="36"
-    font-weight="700"
+    font-weight="bold"
     fill="#39d353">
     0
 </text>
 
-
-<!-- Current Streak -->
+<!-- Current -->
 
 <rect
     x="327"
@@ -94,7 +83,7 @@ viewBox="0 0 900 260">
 <text
     x="352"
     y="140"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="15"
     fill="#8b949e">
     Current Streak
@@ -102,10 +91,10 @@ viewBox="0 0 900 260">
 
 <text
     x="352"
-    y="184"
-    font-family="Arial, Helvetica, sans-serif"
+    y="185"
+    font-family="Arial"
     font-size="36"
-    font-weight="700"
+    font-weight="bold"
     fill="#f0f6fc">
     0
 </text>
@@ -113,14 +102,13 @@ viewBox="0 0 900 260">
 <text
     x="352"
     y="207"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="13"
     fill="#8b949e">
     days
 </text>
 
-
-<!-- Longest Streak -->
+<!-- Longest -->
 
 <rect
     x="614"
@@ -135,7 +123,7 @@ viewBox="0 0 900 260">
 <text
     x="639"
     y="140"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="15"
     fill="#8b949e">
     Longest Streak
@@ -143,10 +131,10 @@ viewBox="0 0 900 260">
 
 <text
     x="639"
-    y="184"
-    font-family="Arial, Helvetica, sans-serif"
+    y="185"
+    font-family="Arial"
     font-size="36"
-    font-weight="700"
+    font-weight="bold"
     fill="#f0f6fc">
     0
 </text>
@@ -154,7 +142,7 @@ viewBox="0 0 900 260">
 <text
     x="639"
     y="207"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="13"
     fill="#8b949e">
     days
