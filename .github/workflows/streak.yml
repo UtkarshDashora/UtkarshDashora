@@ -3,33 +3,48 @@ name: Update GitHub Streak Stats
 on:
   schedule:
     - cron: "0 3 * * *"
-  push:
-    paths:
-      - ".github/workflows/streak.yml"
+
   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+  push:
+    paths:
+      - "scripts/generate_streak.py"
+      - ".github/workflows/streak.yml"
 
-    permissions:
-      contents: write
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate streak stats
-        uses: DenverCoder1/github-readme-streak-stats@v1
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          options: user=${{ github.repository_owner }}&theme=tokyonight&hide_border=true&disable_animations=true&timezone=Asia/Kolkata&starting_year=2024
-          path: profile/streak.svg
-          token: ${{ secrets.STREAK_STATS_TOKEN }}
+          python-version: "3.x"
 
-      - name: Commit streak stats
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Generate streak SVG
+        env:
+          STREAK_STATS_TOKEN: ${{ secrets.STREAK_STATS_TOKEN }}
+        run: |
+          python scripts/generate_streak.py
+
+      - name: Commit generated SVG
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add profile/streak.svg
-          git commit -m "Update streak stats" || exit 0
+
+          git diff --cached --quiet || git commit -m "Update GitHub streak stats"
+
           git push
