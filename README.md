@@ -179,7 +179,67 @@ Full Stack Developer • React Developer • AI/GenAI Enthusiast • Problem Sol
 - 👤 User profiles
 
 ---
+<h2>🔥 GitHub Streak</h2>
+
+<p align="center">
+  <img
+    src="https://streak-stats.demolab.com/?user=UtkarshDashora&theme=tokyonight&hide_border=true&timezone=Asia%2FKolkata"
+    alt="Utkarsh Dashora GitHub Streak"
+  />
+</p>
+
+# 📈 Profile Summary
+
+<p align="center">
+
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=UtkarshDashora&theme=tokyonight"/>
+
+</p>
+
+<p align="center">
+
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=UtkarshDashora&theme=tokyonight"/>
+
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=UtkarshDashora&theme=tokyonight"/>
+
+</p>
+
+<p align="center">
+
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=UtkarshDashora&theme=tokyonight"/>
+
+</p>
+
 ---
+# 📊 GitHub Stats
+
+<p align="center">
+  <img height="170" src="https://github-readme-stats.shion.dev/api?username=UtkarshDashora&theme=tokyonight&show_icons=true&hide_border=true" />
+  <img height="170" src="https://github-readme-stats.shion.dev/api/top-langs/?username=UtkarshDashora&layout=compact&theme=tokyonight&hide_border=true" />
+</p>
+
+---
+
+# 🧠 LeetCode
+
+<p align="center">
+
+<img src="https://leetcard.jacoblin.cool/utkarshdashora?theme=dark&font=Baloo&ext=heatmap"/>
+
+</p>
+
+---
+
+# 🐍 Contribution Snake
+
+<p align="center">
+
+<img src="https://profile-readme-generator.com/assets/snake.svg"/>
+
+</p>
+
+---
+
 
 # 🤖 AI & GenAI
 
