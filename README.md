@@ -69,6 +69,12 @@
 [![GitHub](https://img.shields.io/badge/GitHub-UtkarshDashora-000?style=flat&logo=github)](https://github.com/UtkarshDashora)
 
 ---
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/UtkarshDashora/UtkarshDashora/main/profile/streak.svg"
+    alt="GitHub Contribution Stats"
+  />
+</p>
 
 ### ⚡ Fun Fact
 
