@@ -1,304 +1,275 @@
 import os
-import requests
-from datetime import datetime, timedelta, timezone
+
+# ==========================================================
+# 👇 SIRF YE 3 VALUES UPDATE KARNA
+# ==========================================================
 
 USERNAME = "UtkarshDashora"
-TOKEN = os.environ["STREAK_STATS_TOKEN"]
 
-API_URL = "https://api.github.com/graphql"
+TOTAL_CONTRIBUTIONS = 799
+CURRENT_STREAK = 7
+LONGEST_STREAK = 32
 
-today = datetime.now(timezone.utc).date()
-start = today - timedelta(days=365)
+# ==========================================================
+# FILE
+# ==========================================================
 
-query = """
-query($login: String!, $from: DateTime!, $to: DateTime!) {
-  user(login: $login) {
-    login
-    contributionsCollection(from: $from, to: $to) {
-      contributionCalendar {
-        totalContributions
-        weeks {
-          contributionDays {
-            date
-            contributionCount
-          }
-        }
-      }
-    }
-  }
-}
-"""
+OUTPUT = "profile/streak.svg"
 
-variables = {
-    "login": USERNAME,
-    "from": f"{start}T00:00:00Z",
-    "to": f"{today}T23:59:59Z"
-}
+# ==========================================================
+# SVG CARD
+# ==========================================================
 
-headers = {
-    "Authorization": f"Bearer {TOKEN}",
-    "Content-Type": "application/json",
-    "User-Agent": "UtkarshDashora-Streak-Stats"
-}
-
-response = requests.post(
-    API_URL,
-    headers=headers,
-    json={
-        "query": query,
-        "variables": variables
-    },
-    timeout=30
-)
-
-print("HTTP STATUS:", response.status_code)
-
-data = response.json()
-
-print("API RESPONSE:")
-print(data)
-
-if response.status_code != 200:
-    raise RuntimeError(f"GitHub API error: {response.status_code}")
-
-if "errors" in data:
-    raise RuntimeError(data["errors"])
-
-user = data["data"]["user"]
-
-if user is None:
-    raise RuntimeError(
-        f"GitHub user '{USERNAME}' could not be found."
-    )
-
-calendar = user["contributionsCollection"]["contributionCalendar"]
-
-total = calendar["totalContributions"]
-
-days = []
-
-for week in calendar["weeks"]:
-    for day in week["contributionDays"]:
-        days.append({
-            "date": datetime.strptime(
-                day["date"], "%Y-%m-%d"
-            ).date(),
-            "count": day["contributionCount"]
-        })
-
-days.sort(key=lambda x: x["date"])
-
-# -----------------------------
-# Current streak
-# -----------------------------
-
-dates = {
-    d["date"]
-    for d in days
-    if d["count"] > 0
-}
-
-current_streak = 0
-
-if dates:
-
-    check_date = today
-
-    if check_date not in dates:
-        check_date = today - timedelta(days=1)
-
-    while check_date in dates:
-        current_streak += 1
-        check_date -= timedelta(days=1)
-
-
-# -----------------------------
-# Longest streak
-# -----------------------------
-
-longest_streak = 0
-running = 0
-previous = None
-
-for date in sorted(dates):
-
-    if previous and date == previous + timedelta(days=1):
-        running += 1
-    else:
-        running = 1
-
-    longest_streak = max(longest_streak, running)
-    previous = date
-
-
-# -----------------------------
-# SVG
-# -----------------------------
-
-svg = f"""<svg xmlns="http://www.w3.org/2000/svg"
+svg = f'''<svg xmlns="http://www.w3.org/2000/svg"
 width="900"
-height="260"
-viewBox="0 0 900 260">
+height="300"
+viewBox="0 0 900 300">
 
 <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#161b22"/>
-        <stop offset="100%" stop-color="#0d1117"/>
+
+    <linearGradient id="bg"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1">
+
+        <stop offset="0%" stop-color="#0d1117"/>
+        <stop offset="100%" stop-color="#161b22"/>
+
     </linearGradient>
+
+    <linearGradient id="green"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1">
+
+        <stop offset="0%" stop-color="#39d353"/>
+        <stop offset="100%" stop-color="#26a641"/>
+
+    </linearGradient>
+
 </defs>
+
+
+<!-- MAIN BACKGROUND -->
 
 <rect
     width="900"
-    height="260"
-    rx="18"
+    height="300"
+    rx="20"
     fill="url(#bg)"
-    stroke="#30363d"
-/>
+    stroke="#30363d"/>
+
+
+<!-- TITLE -->
 
 <text
-    x="40"
+    x="45"
     y="50"
-    font-family="Arial"
-    font-size="25"
-    font-weight="bold"
-    fill="#f0f6fc">
-    GitHub Contribution Streak
+    fill="#ffffff"
+    font-family="Arial, sans-serif"
+    font-size="27"
+    font-weight="bold">
+
+    GitHub Contribution Stats
+
 </text>
+
+
+<!-- USERNAME -->
 
 <text
-    x="40"
+    x="45"
     y="78"
-    font-family="Arial"
-    font-size="14"
-    fill="#8b949e">
-    @{USERNAME} • Last 365 Days
+    fill="#8b949e"
+    font-family="Arial, sans-serif"
+    font-size="14">
+
+    @{USERNAME}
+
 </text>
 
-<!-- Total -->
+
+<!-- ========================= -->
+<!-- TOTAL CONTRIBUTIONS -->
+<!-- ========================= -->
 
 <rect
-    x="40"
-    y="105"
+    x="45"
+    y="110"
     width="245"
-    height="115"
-    rx="14"
+    height="125"
+    rx="16"
     fill="#21262d"
-    stroke="#30363d"
-/>
+    stroke="#30363d"/>
 
 <text
-    x="65"
-    y="140"
+    x="70"
+    y="145"
+    fill="#8b949e"
     font-family="Arial"
-    font-size="15"
-    fill="#8b949e">
+    font-size="14">
+
     Total Contributions
+
 </text>
 
 <text
-    x="65"
-    y="185"
+    x="70"
+    y="195"
+    fill="url(#green)"
     font-family="Arial"
-    font-size="36"
-    font-weight="bold"
-    fill="#39d353">
-    {total}
+    font-size="42"
+    font-weight="bold">
+
+    {TOTAL_CONTRIBUTIONS}
+
 </text>
 
-<!-- Current -->
+<text
+    x="70"
+    y="218"
+    fill="#8b949e"
+    font-family="Arial"
+    font-size="12">
+
+    last 365 days
+
+</text>
+
+
+<!-- ========================= -->
+<!-- CURRENT STREAK -->
+<!-- ========================= -->
 
 <rect
     x="327"
-    y="105"
+    y="110"
     width="245"
-    height="115"
-    rx="14"
+    height="125"
+    rx="16"
     fill="#21262d"
-    stroke="#30363d"
-/>
+    stroke="#30363d"/>
 
 <text
     x="352"
-    y="140"
+    y="145"
+    fill="#8b949e"
     font-family="Arial"
-    font-size="15"
-    fill="#8b949e">
+    font-size="14">
+
     Current Streak
+
 </text>
 
 <text
     x="352"
-    y="185"
+    y="195"
+    fill="#ffffff"
     font-family="Arial"
-    font-size="36"
-    font-weight="bold"
-    fill="#f0f6fc">
-    {current_streak}
+    font-size="42"
+    font-weight="bold">
+
+    {CURRENT_STREAK}
+
 </text>
 
 <text
     x="352"
-    y="207"
+    y="218"
+    fill="#8b949e"
     font-family="Arial"
-    font-size="13"
-    fill="#8b949e">
-    days
+    font-size="12">
+
+    consecutive days
+
 </text>
 
-<!-- Longest -->
+
+<!-- ========================= -->
+<!-- LONGEST STREAK -->
+<!-- ========================= -->
 
 <rect
-    x="614"
-    y="105"
+    x="609"
+    y="110"
     width="245"
-    height="115"
-    rx="14"
+    height="125"
+    rx="16"
     fill="#21262d"
-    stroke="#30363d"
-/>
+    stroke="#30363d"/>
 
 <text
-    x="639"
-    y="140"
+    x="634"
+    y="145"
+    fill="#8b949e"
     font-family="Arial"
-    font-size="15"
-    fill="#8b949e">
+    font-size="14">
+
     Longest Streak
+
 </text>
 
 <text
-    x="639"
-    y="185"
+    x="634"
+    y="195"
+    fill="#ffffff"
     font-family="Arial"
-    font-size="36"
-    font-weight="bold"
-    fill="#f0f6fc">
-    {longest_streak}
+    font-size="42"
+    font-weight="bold">
+
+    {LONGEST_STREAK}
+
 </text>
 
 <text
-    x="639"
-    y="207"
+    x="634"
+    y="218"
+    fill="#8b949e"
     font-family="Arial"
-    font-size="13"
-    fill="#8b949e">
-    days
+    font-size="12">
+
+    consecutive days
+
+</text>
+
+
+<!-- FOOTER -->
+
+<text
+    x="45"
+    y="270"
+    fill="#6e7681"
+    font-family="Arial"
+    font-size="11">
+
+    Custom GitHub Stats • @{USERNAME}
+
 </text>
 
 </svg>
-"""
+'''
+
+# ==========================================================
+# CREATE FOLDER
+# ==========================================================
 
 os.makedirs("profile", exist_ok=True)
 
-with open("profile/streak.svg", "w", encoding="utf-8") as f:
-    f.write(svg)
+# ==========================================================
+# SAVE
+# ==========================================================
 
-print()
-print("====================================")
-print("GitHub Streak Stats")
-print("====================================")
-print(f"Username           : {USERNAME}")
-print(f"Total Contributions: {total}")
-print(f"Current Streak     : {current_streak}")
-print(f"Longest Streak     : {longest_streak}")
-print("====================================")
+with open(OUTPUT, "w", encoding="utf-8") as file:
+    file.write(svg)
+
+print("===================================")
+print("GitHub Stats Generated Successfully")
+print("===================================")
+print(f"Username: {USERNAME}")
+print(f"Total Contributions: {TOTAL_CONTRIBUTIONS}")
+print(f"Current Streak: {CURRENT_STREAK}")
+print(f"Longest Streak: {LONGEST_STREAK}")
+print(f"File: {OUTPUT}")
+print("===================================")
