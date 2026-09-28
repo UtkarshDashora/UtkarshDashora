@@ -1,16 +1,19 @@
 import os
-import html
 import requests
 from datetime import datetime, timedelta, timezone
 
 USERNAME = "UtkarshDashora"
 TOKEN = os.environ["STREAK_STATS_TOKEN"]
 
-GRAPHQL_URL = "https://api.github.com/graphql"
+API_URL = "https://api.github.com/graphql"
+
+today = datetime.now(timezone.utc).date()
+start = today - timedelta(days=365)
 
 query = """
 query($login: String!, $from: DateTime!, $to: DateTime!) {
   user(login: $login) {
+    login
     contributionsCollection(from: $from, to: $to) {
       contributionCalendar {
         totalContributions
@@ -26,35 +29,49 @@ query($login: String!, $from: DateTime!, $to: DateTime!) {
 }
 """
 
-today = datetime.now(timezone.utc).date()
-from_date = today - timedelta(days=365)
-
 variables = {
     "login": USERNAME,
-    "from": f"{from_date}T00:00:00Z",
-    "to": f"{today}T23:59:59Z",
+    "from": f"{start}T00:00:00Z",
+    "to": f"{today}T23:59:59Z"
 }
 
 headers = {
     "Authorization": f"Bearer {TOKEN}",
     "Content-Type": "application/json",
+    "User-Agent": "UtkarshDashora-Streak-Stats"
 }
 
 response = requests.post(
-    GRAPHQL_URL,
-    json={"query": query, "variables": variables},
+    API_URL,
     headers=headers,
-    timeout=30,
+    json={
+        "query": query,
+        "variables": variables
+    },
+    timeout=30
 )
 
-response.raise_for_status()
+print("HTTP STATUS:", response.status_code)
 
 data = response.json()
+
+print("API RESPONSE:")
+print(data)
+
+if response.status_code != 200:
+    raise RuntimeError(f"GitHub API error: {response.status_code}")
 
 if "errors" in data:
     raise RuntimeError(data["errors"])
 
-calendar = data["data"]["user"]["contributionsCollection"]["contributionCalendar"]
+user = data["data"]["user"]
+
+if user is None:
+    raise RuntimeError(
+        f"GitHub user '{USERNAME}' could not be found."
+    )
+
+calendar = user["contributionsCollection"]["contributionCalendar"]
 
 total = calendar["totalContributions"]
 
@@ -63,68 +80,60 @@ days = []
 for week in calendar["weeks"]:
     for day in week["contributionDays"]:
         days.append({
-            "date": datetime.strptime(day["date"], "%Y-%m-%d").date(),
-            "count": day["contributionCount"],
+            "date": datetime.strptime(
+                day["date"], "%Y-%m-%d"
+            ).date(),
+            "count": day["contributionCount"]
         })
 
 days.sort(key=lambda x: x["date"])
 
 # -----------------------------
-# Calculate current streak
+# Current streak
 # -----------------------------
 
-contribution_dates = {
-    day["date"]
-    for day in days
-    if day["count"] > 0
+dates = {
+    d["date"]
+    for d in days
+    if d["count"] > 0
 }
 
-if contribution_dates:
-    latest = max(contribution_dates)
+current_streak = 0
 
-    # Allow today to be empty while yesterday has contribution.
-    if latest == today:
-        current_date = today
-    elif latest == today - timedelta(days=1):
-        current_date = today - timedelta(days=1)
-    else:
-        current_date = None
+if dates:
 
-    current_streak = 0
+    check_date = today
 
-    if current_date:
-        while current_date in contribution_dates:
-            current_streak += 1
-            current_date -= timedelta(days=1)
-else:
-    current_streak = 0
+    if check_date not in dates:
+        check_date = today - timedelta(days=1)
+
+    while check_date in dates:
+        current_streak += 1
+        check_date -= timedelta(days=1)
 
 
 # -----------------------------
-# Calculate longest streak
+# Longest streak
 # -----------------------------
 
 longest_streak = 0
 running = 0
-previous_date = None
+previous = None
 
-for date in sorted(contribution_dates):
-    if previous_date and date == previous_date + timedelta(days=1):
+for date in sorted(dates):
+
+    if previous and date == previous + timedelta(days=1):
         running += 1
     else:
         running = 1
 
     longest_streak = max(longest_streak, running)
-    previous_date = date
+    previous = date
 
 
 # -----------------------------
-# Generate SVG
+# SVG
 # -----------------------------
-
-def esc(value):
-    return html.escape(str(value))
-
 
 svg = f"""<svg xmlns="http://www.w3.org/2000/svg"
 width="900"
@@ -136,16 +145,9 @@ viewBox="0 0 900 260">
         <stop offset="0%" stop-color="#161b22"/>
         <stop offset="100%" stop-color="#0d1117"/>
     </linearGradient>
-
-    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#39d353"/>
-        <stop offset="100%" stop-color="#26a641"/>
-    </linearGradient>
 </defs>
 
 <rect
-    x="0"
-    y="0"
     width="900"
     height="260"
     rx="18"
@@ -153,29 +155,26 @@ viewBox="0 0 900 260">
     stroke="#30363d"
 />
 
-<!-- Header -->
-
 <text
     x="40"
-    y="48"
-    font-family="Arial, Helvetica, sans-serif"
-    font-size="24"
-    font-weight="700"
+    y="50"
+    font-family="Arial"
+    font-size="25"
+    font-weight="bold"
     fill="#f0f6fc">
     GitHub Contribution Streak
 </text>
 
 <text
     x="40"
-    y="76"
-    font-family="Arial, Helvetica, sans-serif"
+    y="78"
+    font-family="Arial"
     font-size="14"
     fill="#8b949e">
-    @{esc(USERNAME)} • Last 365 Days
+    @{USERNAME} • Last 365 Days
 </text>
 
-
-<!-- Total Contributions -->
+<!-- Total -->
 
 <rect
     x="40"
@@ -190,7 +189,7 @@ viewBox="0 0 900 260">
 <text
     x="65"
     y="140"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="15"
     fill="#8b949e">
     Total Contributions
@@ -198,16 +197,15 @@ viewBox="0 0 900 260">
 
 <text
     x="65"
-    y="184"
-    font-family="Arial, Helvetica, sans-serif"
+    y="185"
+    font-family="Arial"
     font-size="36"
-    font-weight="700"
+    font-weight="bold"
     fill="#39d353">
-    {esc(total)}
+    {total}
 </text>
 
-
-<!-- Current Streak -->
+<!-- Current -->
 
 <rect
     x="327"
@@ -222,7 +220,7 @@ viewBox="0 0 900 260">
 <text
     x="352"
     y="140"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="15"
     fill="#8b949e">
     Current Streak
@@ -230,25 +228,24 @@ viewBox="0 0 900 260">
 
 <text
     x="352"
-    y="184"
-    font-family="Arial, Helvetica, sans-serif"
+    y="185"
+    font-family="Arial"
     font-size="36"
-    font-weight="700"
+    font-weight="bold"
     fill="#f0f6fc">
-    {esc(current_streak)}
+    {current_streak}
 </text>
 
 <text
     x="352"
     y="207"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="13"
     fill="#8b949e">
     days
 </text>
 
-
-<!-- Longest Streak -->
+<!-- Longest -->
 
 <rect
     x="614"
@@ -263,7 +260,7 @@ viewBox="0 0 900 260">
 <text
     x="639"
     y="140"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="15"
     fill="#8b949e">
     Longest Streak
@@ -271,18 +268,18 @@ viewBox="0 0 900 260">
 
 <text
     x="639"
-    y="184"
-    font-family="Arial, Helvetica, sans-serif"
+    y="185"
+    font-family="Arial"
     font-size="36"
-    font-weight="700"
+    font-weight="bold"
     fill="#f0f6fc">
-    {esc(longest_streak)}
+    {longest_streak}
 </text>
 
 <text
     x="639"
     y="207"
-    font-family="Arial, Helvetica, sans-serif"
+    font-family="Arial"
     font-size="13"
     fill="#8b949e">
     days
@@ -293,14 +290,15 @@ viewBox="0 0 900 260">
 
 os.makedirs("profile", exist_ok=True)
 
-with open("profile/streak.svg", "w", encoding="utf-8") as file:
-    file.write(svg)
+with open("profile/streak.svg", "w", encoding="utf-8") as f:
+    f.write(svg)
 
-print("======================================")
-print(" GitHub Streak Stats Generated")
-print("======================================")
-print(f"User: {USERNAME}")
+print()
+print("====================================")
+print("GitHub Streak Stats")
+print("====================================")
+print(f"Username           : {USERNAME}")
 print(f"Total Contributions: {total}")
-print(f"Current Streak: {current_streak}")
-print(f"Longest Streak: {longest_streak}")
-print("Output: profile/streak.svg")
+print(f"Current Streak     : {current_streak}")
+print(f"Longest Streak     : {longest_streak}")
+print("====================================")
