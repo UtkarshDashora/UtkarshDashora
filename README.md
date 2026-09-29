@@ -273,3 +273,22 @@ I build AI-powered applications by combining
         ├── 🔌 AI API Integration
         │
         └── 🚀 AI + Full Stack Applications
+---
+```
+## ☕ Support My Work
+
+<p align="center">
+  <a href="https://buymeacoffee.com/utkarshdashora" target="_blank">
+    <img
+      src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+      alt="Buy Me a Coffee"
+      width="180"
+    />
+  </a>
+</p>
+
+<p align="center">
+  If you find my projects useful, you can support my work ☕🚀
+</p>
+
+---
