@@ -61,7 +61,7 @@ Full Stack Developer • React Developer • AI/GenAI Enthusiast • Problem Sol
 <img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white"/>
 </a>
 
-<a href="https://utkarshportfolio-958b2.web.app/">
+<a href="https://utkarshdashora.vercel.app/">
 <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=google-chrome&logoColor=white"/>
 </a>
 
